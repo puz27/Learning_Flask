@@ -6,6 +6,16 @@
 <div class="container">
 <h1>ABOUT</h1>
 </div>
+{{data}}
 
+<div>BROWSER: {{user_agent}}</div>
+
+<div>LIST: {{list}}</div>
+<ul>
+{%for i in list%}
+    <li>{{i}}</li>
+{%endfor%}
+</ul>
+{{addres_info}}
 {% endblock %}
 

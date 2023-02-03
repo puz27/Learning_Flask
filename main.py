@@ -1,6 +1,5 @@
-import datetime
-import random
-
+from flask import request
+from flask import make_response
 from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
@@ -8,54 +7,41 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    name = "START PAGE"
-    return render_template("index.html", name= name)
+    data = "START PAGE"
+    return render_template("index.html", data= data), 200
 
-@app.route('/about')
+@app.route('/about/')
 def about():
+    data = "ABOUT PAGE"
+    user_agent = request.headers.get('User-Agent')
+    list = [1, 2, 3]
+    addres_info = url_for('about', _external=True)
 
-    return render_template("about.html")
+    return render_template("about.html", data= data, user_agent= user_agent, list= list, addres_info= addres_info)
+
+
+@app.route('/cookie/')
+def cookie():
+    data = "COOKIE PAGE"
+    response = make_response("CARRIES COOKIE!")
+    response.set_cookie('answer', '42')
+    return response
+
 
 @app.route('/user/<string:name>/<int:id>')
 def user(name, id):
     return "USER:" + name + "ID:" + str(id)
 
-# @app.route('/test_1')
-# def test_1():
-#     a = 1
-#     b = 3
-#     c = 2
-#     return render_template("test_1.html", numbers=(7, 5, 8, 0, 3), a=a, b=b, c=c)
+@app.route('/pictures/')
+def pictures():
+    return render_template("pictures.html")
 
 
-#подсчет оперций
-@app.route('/<float:a>/<string:znak>/<float:b>/')
-def test_2(a, znak, b):
-    if znak == ":":
-        znak = '/'
-        if b == 0:
-            return render_template("test_2.html", final="Ошибка")
-        else:
-            final = eval(str(a) + znak + str(b))
-            return render_template("test_2.html", final=final)
-    final = eval(str(a)+znak+str(b))
-    return render_template("test_2.html", final=final)
-
-
-# вывод информации в шаблоны
-
-# @app.route('/<float:number_float>/')
-# def count_number(number_float):
-#     number = number_float
-#     output = number * 2
-#     return render_template("index.html", text= "Ваше число {}, умноженное на 2: {}".format(number, output))
-# @app.route('/<float:r>/')
-# def count_number_2(r):
-#     pi = 3.14
-#     return render_template("index.html", pi=pi, r=r)
-
-
+@app.errorhandler(404)
+def error_404(data):
+    return render_template("404.html"), 404
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
