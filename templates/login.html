@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<h1>Login</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }}
+    {{ form.name() }}<br>
+    {{ form.submit() }} <br>
+    {{name}}<br><br>
+
+
+Информация о сессии: {{info}}
+{%for i in session.items()%}
+    <li>{{i}}</li>
+{%endfor%}
+
+</form>
+
+
+
+
+
+{% endblock %}
+
